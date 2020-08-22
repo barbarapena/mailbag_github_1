@@ -7,24 +7,37 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(kableExtra)
 ```
 
-## R Markdown
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+##Introducción 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+### De donde vienen los datos
+Estos datos sobre platas extintas son datos de la **IUCN**, y se obtuvieron del [siguiente repositorio](https://github.com/rfordatascience/tidytuesday)  de github
 
-```{r cars}
-summary(cars)
+¿Que es un chunks? 
+Es un espacio donde pongo el codigo a ejecutar en R (donde además se generan cuadros con ## que indican los mensajes que aparecen en la consola). Para agregar este espacio, clickeo en Insert (en la barra del 'scrip') y agrego R. Para agregalo en el html, clickeo en knit. 
+
+```{r}
+plants <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-08-18/plants.csv')
+actions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-08-18/actions.csv')
+threats <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-08-18/threats.csv') 
 ```
 
-## Including Plots
+Si deseo que los mensajes ni los warnings aparezcan impresos, en {r}, agrego {r, warning=F, messages=F}.
+Puego setear esto como defult la primera vez que aparecen las opciones en el documento. 
 
-You can also embed plots, for example:
+echo= muestro o no el codigo}
+message= muestra el mensaje de paquetes
+warning= muestra o no advertenias
+eval= evaluar o no el codigo
+cache = guardar o no el resultado
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
+## Inline code
+Agrega resultados de una linea en el texto, para esto debo agregar una r minúscula entre dos ``, y entre esas comillas, la linea. 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+## Datos de Sudamérica
+El número de especias que hay en sudamérica es `r plants %>% filter(continent== "South America") %>% nrow()` especies 
+
