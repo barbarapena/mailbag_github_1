@@ -19,3 +19,17 @@ git config --global user.name "barbarapena"
 plants <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-08-18/plants.csv')
 actions <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-08-18/actions.csv')
 threats <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-08-18/threats.csv') 
+
+## Install pacman
+# es un paquete es un manejadro de paquetes, si no tienes un paquete lo instala
+install.packages("pacman")
+library(pacman)
+
+
+### Para las tablas
+data("msleep")
+Tabla <- msleep %>%  
+  group_by(vore) %>% 
+  summarise_at ("sleep_total", .funs = list(Mean=mean, SD=sd )) %>%  
+  filter(!is.na(vore)) %>% 
+  arrange(desc(Mean))
