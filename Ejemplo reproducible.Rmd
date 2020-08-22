@@ -9,15 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(kableExtra)
+library(knitr)
 ```
 
 
-##Introducción 
+#Introducción 
 
 ### De donde vienen los datos
 Estos datos sobre platas extintas son datos de la **IUCN**, y se obtuvieron del [siguiente repositorio](https://github.com/rfordatascience/tidytuesday)  de github
 
-¿Que es un chunks? 
+##¿Que es un chunks? 
 Es un espacio donde pongo el codigo a ejecutar en R (donde además se generan cuadros con ## que indican los mensajes que aparecen en la consola). Para agregar este espacio, clickeo en Insert (en la barra del 'scrip') y agrego R. Para agregalo en el html, clickeo en knit. 
 
 ```{r}
@@ -36,8 +37,53 @@ eval= evaluar o no el codigo
 cache = guardar o no el resultado
 
 ## Inline code
-Agrega resultados de una linea en el texto, para esto debo agregar una r minúscula entre dos ``, y entre esas comillas, la linea. 
+Agrega resultados de una linea en el texto, para esto debo agregar una r minúscula entre dos ``, y entre esas comillas, la linea. Es un codigo entrelazado en el texto. Con esta herramienta, podria actualizar medias, maximos, minimos. Dejar instrucciones para que un html se knictee una una vez a la semana. La condición es que la linea agregada corresponda a un vector, no a un dataframe.
 
-## Datos de Sudamérica
+### Datos de Sudamérica
 El número de especias que hay en sudamérica es `r plants %>% filter(continent== "South America") %>% nrow()` especies 
+
+## Tablas Kable
+
+```{r}
+data("msleep")
+Tabla <- msleep %>%  
+  group_by(vore) %>% 
+  summarise_at ("sleep_total", .funs = list(Mean=mean, SD=sd )) %>%  
+  filter(!is.na(vore)) %>% 
+  arrange(desc(Mean))
+kable(Tabla)
+```
+_______________________________________________________________________
+La tabla quedó sin limites, y muchos decimales (feas)
+
+```{r}
+kable(Tabla, digits = 2)
+```
+__________________________________________________________________________
+
+Agregando kable_styling
+
+```{r}
+kable(Tabla, digits = 2) %>% kable_styling()
+```
+__________________________________________________________________________
+Agregando mas opciones en kable_styling
+
+```{r}
+kable(Tabla, digits = 2) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"))
+```
+___________________________________________________________________________
+Agregando más opciones akable_styling
+```{r}
+kable(Tabla, digits = 2) %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F)
+```
+___________________________________________________________________________
+Agregando más otras opciones akable_styling
+```{r}
+msleep_long<-msleep %>% select(name, vore,sleep_total, brainwt)
+
+kable(msleep_long, digits = 2, caption="La base de datos entera") %>% kable_styling(bootstrap_options = c("striped", "hover", "condensed"), full_width = F) %>% scroll_box(width = "800px",height = "200px")
+```
+
+
 
